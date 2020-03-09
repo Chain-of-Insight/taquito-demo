@@ -1,4 +1,3 @@
-import { Tezos, mountProvider, makeExampleTransaction } from './tezProvider';
 import Vue from 'vue';
 import App from './App';
 

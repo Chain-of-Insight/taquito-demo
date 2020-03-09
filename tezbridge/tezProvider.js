@@ -10,6 +10,11 @@ const mountProvider = function () {
   console.log('Tezos =>', Tezos);
 };
 
+const getBalance = async (address) => {
+  let worker = await tezos.tz.getBalance(address);
+  return worker;
+};
+
 const exampleContract = 'KT1LjpCPTqGajeaXfLM3WV7csatSgyZcTDQ8';
 
 const getContractInstance = async (contract) => {
@@ -33,5 +38,6 @@ const makeExampleTransaction = async function () {
 module.exports = {
     Tezos: Tezos,
     mountProvider: mountProvider,
+    getBalance: getBalance,
     makeExampleTransaction: makeExampleTransaction
 };
