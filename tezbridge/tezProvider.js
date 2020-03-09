@@ -11,7 +11,7 @@ const mountProvider = function () {
 };
 
 const getBalance = async (address) => {
-  let worker = await tezos.tz.getBalance(address);
+  let worker = await Tezos.tz.getBalance(address);
   return worker;
 };
 
@@ -22,22 +22,10 @@ const getContractInstance = async (contract) => {
   return contractInstance;
 };
 
-const makeExampleTransaction = async function () {
-  let g = getContractInstance(exampleContract);
-
-  g.then(async (contract) => {
-    console.log('contract', contract);
-    let i = 7;
-    let result = await contract.methods.increment(i).send();
-    console.log('Interaction =>', result);
-  }).catch((error) => {
-    console.log('ERROR INCREMENTING STORAGE: =>', error);
-  });
-};
-
 module.exports = {
     Tezos: Tezos,
     mountProvider: mountProvider,
     getBalance: getBalance,
-    makeExampleTransaction: makeExampleTransaction
+    exampleContract: exampleContract,
+    getContractInstance: getContractInstance
 };
