@@ -57,6 +57,10 @@
           <div class="loading" v-if="loading">
             <img class="loading" src="./assets/img/loading.gif">
           </div>
+          <p class="tx-link" v-if="transactionExplorerLink">
+            <a :href="transactionExplorerLink" target="_blank">View transaction on ꜩStats</a>
+          </p>
+          </p>
           <pre class="data" v-if="transactionData">{{ transactionData }}</pre>
           <pre class="error" v-if="errorMessage">{{ errorMessage }}</pre>
         </div>
@@ -94,6 +98,8 @@ export default {
     address: null,
     currentBalance: null,
     transactionData: null,
+    explorerPrefix: "https://babylonnet.tzstats.com/",
+    transactionExplorerLink: null,
     loading: false,
     errorMessage: null
   }),
@@ -139,8 +145,23 @@ export default {
                 let i = 7;
                 let result = await contract.methods.increment(i).send();
                 console.log('Interaction =>', result);
-                this.loading = false;
-                this.transactionData = String(result);
+                // Polls every 1 sec. for incoming data
+                let timedEvent = setInterval(() => {
+                  if (result.hasOwnProperty('results')) {
+                      if (result.results) {
+                          if (result.results.length) {
+                              clearInterval(timedEvent);
+                              let opResults = result.results;
+                              this.transactionData = JSON.stringify(opResults, null, 2); // Indent 2 JSON output spaces
+                              this.loading = false;
+                              let hash = (result.hasOwnProperty('hash')) ? String(result.hash) : false;
+                              if (hash) {
+                                  this.transactionExplorerLink = this.explorerPrefix + hash;
+                              }
+                          }
+                      }
+                  }
+                }, 1000);
             }).catch((error) => {
                 console.log('ERROR INCREMENTING STORAGE: =>', error);
                 this.loading = false;
@@ -207,6 +228,7 @@ export default {
   pre.data {
     background: #dcdcdc;
     color: #333333;
+    text-align: left;
   }
   pre.error {
     background: #f44336;
