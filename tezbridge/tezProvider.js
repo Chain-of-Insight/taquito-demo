@@ -23,9 +23,9 @@ const getContractInstance = async (contract) => {
 };
 
 module.exports = {
-    Tezos: Tezos,
-    mountProvider: mountProvider,
-    getBalance: getBalance,
-    exampleContract: exampleContract,
-    getContractInstance: getContractInstance
+  Tezos: Tezos,
+  mountProvider: mountProvider,
+  getBalance: getBalance,
+  exampleContract: exampleContract,
+  getContractInstance: getContractInstance
 };
